@@ -1,0 +1,97 @@
+syntax = "proto3";
+
+import "MessageID.proto";
+
+package ClientPKG;
+
+//游戏版本信息
+message GameVersion
+{
+    int32       Version  = 1;       //版本号
+}
+
+
+//网关服务器信息
+message GateServerInfo
+{
+    string      ServerID    = 1;    //服务器ID
+    string      ServerIP    = 2;    //服务器IP
+    int32       ServerPort  = 3;    //服务器端口
+    float       ServerLoad  = 4;    //服务器负载
+}
+
+message GateServerList
+{
+    repeated GateServerInfo ServerList  = 1;    //网关服务器列表
+}
+
+message GameError
+{
+    GameErrorCode           ErrorCode       = 1;    //错误代码
+    string                  ErrorInfo       = 2;    //错误信息
+    uint64                  UserID          = 3;    //登录后的用户数据出错时使用用户ID
+    string                  DeviceCode      = 4;    //未登录用户封包到达游戏服务器时用设备码
+}
+
+message LoginGame
+{
+    int32       Version         = 1;  //版本号
+    string      DeviceCode      = 2;  //设备码
+    int32       LoginType       = 3;  //登录方式
+    string      AccessToken     = 4;  //Token
+    uint64      UserID          = 5;  
+    string      ClientIP        = 6;  //登录时的IP地址
+    int32       Port            = 9;  //端口
+}
+
+message AccountInfo
+{
+    uint64      UserID          = 1;    //用户ID
+    string      DeviceCode      = 2;    //设备码
+    string      AccessToken     = 3;    //Token
+    string      UserName        = 4;    //用户名
+    uint64      Score           = 5;    //金币
+    uint64      Diamond         = 6;    //钻石
+}
+
+message JoinGame
+{
+    uint64      UserID         = 1;     //用户ID
+    string      Token          = 2;     //Token
+    uint64      GameID         = 3;     //要加入的游戏ID
+}
+
+message CreateGame
+{
+    uint64      UserID          = 1;    //用户ID
+    string      Token           = 2;    //Token
+    string      GameName        = 3;    //游戏名称
+    uint64      MinScore        = 4;    //最小金币
+    uint64      MaxScore        = 5;    //最大金币
+    bool        Private         = 6;    //是否私人游戏
+}
+
+message GameUserInfo
+{
+    uint64          UserID          = 1;    //用户ID
+    string          UserName        = 2;    //用户昵称
+    int32           SitPosition     = 3;    //所在位置
+    uint64          UserScore       = 4;    //玩家的金币
+    uint64          DeskScore       = 5;    //当前玩家已下注金币
+    UserGameState   GameState       = 6;    //当前游戏状态
+    string          HeadUrl         = 7;    //头像地址
+    string          IP              = 8;    //IP地址
+    int32           Port            = 9;    //端口
+}
+
+message GameRoomInfo
+{
+    uint64                  GameID          = 1;    //GameID
+    string                  GameName        = 2;    //游戏名称
+    repeated GameUserInfo   UserList        = 3;    //玩家列表
+    int32                   DPos            = 4;    //D玩家位置
+    GameState               CurrentState    = 5;    //当前游戏状态
+    uint64                  MinScore        = 6;    //最小金币
+    uint64                  MaxScore        = 7;    //最大金币
+    float                   Percentage      = 8;    //房间抽水比例
+}

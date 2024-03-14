@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+//封包ID定义，1000以内为服务端专用，1000以外为服务端与客户端共用
+//暂定每1000 为一个大块，做为功能分区，不同功能ID 定义在对应的区块内
+enum PKGTypeID
+{
+    PKG_SERVER_MESSAGE_BEGIN            = 0;
+    PKG_SERVER_STATE                    = 1;        //服务器状态信息
+    PKG_SERVER_SHUTDOWN                 = 2;        //服务器关闭
+
+    PKG_SERVER_GAME_ROOM_INFO           = 10;       //游戏房间信息
+    PKG_SERVER_NOTIFY_USER_JOIN_GAME    = 11;       //通知游戏服务器有玩家加入
+
+    PKG_SERVER_MESSAGE_MAX              = 999;
+
+    PKG_GAME_VERSION                    = 1000;     //游戏版本信息
+    PKG_GATE_SERVER_LIST                = 1001;     //网关服务器列表
+    PKG_GAME_LOGIN                      = 1003;     //进入游戏大厅
+    PKG_GAME_ERROR                      = 1004;     //服务端报错
+    PKG_GAME_ACCOUNT_INFO               = 1005;     //帐户信息
+
+    PKG_GAME_JOIN                       = 1100;     //加入游戏
+    PKG_GAME_CREATE                     = 1101;     //创建游戏
+    PKG_GAME_JOIN_INFO                  = 1102;     //创建或加入游戏的信息
+
+    
+    PKG_GAME_START                      = 2000;     //开始游戏
+}
+
+
+//服务器类型
+enum ServerType
+{
+    EST_NONE                        = 0;
+    EST_MANAGER_SERVER              = 1;    
+    EST_LOBBY_SERVER                = 2;
+    EST_GATE_SERVER                 = 3;
+    EST_GAME_SERVER                 = 4;
+}
+
+//错误码
+enum GameErrorCode
+{
+    GEC_SUCCESS                     = 0;    //无错
+    GEC_GAME_VERSION_ERROR          = 1;    //版本错误
+    GEC_ILLEGAL_ACCESS              = 2;    //非法访问
+    GEC_INVALID_LOGIN_TYPE          = 3;    //非法的登录方式
+    GEC_INVALID_USER_ID             = 4;    //错误的用户ID
+    GEC_DEVICE_ID_ERROR             = 5;    //设备ID错误
+    GEC_INVALID_TOKEN               = 6;    //令牌不合法
+    GEC_NOT_LOGIN_OR_INVALID_TOKEN  = 7;    //未登录或令牌错误
+}
+
+//登录方式
+enum LoginType
+{
+    ELT_NOT_LOGIN                   = 0;    //未登录
+    ELT_LOGIN_BY_VISITOR            = 1;    //游客登录
+    ELT_LOGIN_BY_APPLEID            = 2;    //Apple登录
+    ELT_LOGIN_BY_FACEBOOK           = 3;    //FaceBook登录
+    ELG_LOGIN_BY_GOOLE              = 4;    //谷歌登录
+}
+
+//玩家的游戏状态
+enum UserGameState
+{
+    UGS_READY               =  0;   //准备状态，并未加入游戏
+    UGS_PLAYING             =  2;   //正在游戏
+    UGS_DISCARD             =  3;   //弃牌
+}
+
+enum GameState
+{
+    GS_READY                = 0;    //准备状态，未开始游戏
+    GS_HOLECARDS            = 1;    //底牌
+    GS_FLOPCARDS            = 2;    //翻牌
+    GS_RIVERCARDS           = 3;    //河牌
+    GS_END                  = 4;    //游戏结束，进入下一轮等待
+}
+
+enum CardTypes      //牌型
+{
+    CT_HIGHT_CARD       =   0;      //高牌
+    CT_ONE_PAIR         =   1;      //一对
+    CT_TWO_PAIRS        =   2;      //两对
+    CT_THREE_OF_A_KIND  =   3;      //三条
+    CT_STRAIGHT         =   4;      //顺子
+    CT_FLUSH            =   5;      //同花
+    CT_FULL_HOUSE       =   6;      //葫芦
+    CT_FOUR_OF_A_KIND   =   7;      //四条
+    CT_STRAIGHT_FLUSH   =   8;      //同花顺
+    CT_ROYAL_FLUSH      =   9;      //皇家同花顺
+}
